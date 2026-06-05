@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Brisa — Sistem Tasarımı</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<meta name="ext-resource-dependency" content="https://www.brisa.com.tr/assets/images/brisa-logo.svg" data-resource-id="brisaLogo" />
+<meta name="ext-resource-dependency" content="https://commercelab.com.tr/wp-content/uploads/2024/10/logo-w.svg" data-resource-id="clLogo" />
+<style>
+  :root{
+    --ink:#0B1B33;
+    --ink-2:#33415C;
+    --muted:#697586;
+    --line:#E3E8EF;
+    --line-2:#EEF2F6;
+    --bg:#F5F7FA;
+    --card:#FFFFFF;
+
+    --brisa:#0E4DA4;        /* Brisa kurumsal mavi */
+    --brisa-700:#0A3B80;
+    --brisa-50:#EAF1FB;
+    --accent:#1E84FF;       /* canlı mavi */
+    --teal:#0E9F8E;         /* stok / tedarik */
+    --teal-50:#E5F6F3;
+    --amber:#E8820E;        /* müşteri / talep */
+    --amber-50:#FCF1E1;
+    --violet:#6C4BD8;       /* multivendor motoru */
+    --violet-50:#EEEAFB;
+
+    --r:14px;
+    --shadow-sm:0 1px 2px rgba(11,27,51,.05), 0 1px 1px rgba(11,27,51,.04);
+    --shadow:0 8px 24px -12px rgba(11,27,51,.18), 0 2px 6px -2px rgba(11,27,51,.08);
+    --shadow-lg:0 24px 60px -24px rgba(11,27,51,.32);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{
+    font-family:'Manrope',system-ui,-apple-system,sans-serif;
+    background:
+      radial-gradient(900px 500px at 92% -8%, rgba(30,132,255,.07), transparent 60%),
+      radial-gradient(700px 500px at -6% 8%, rgba(14,159,142,.06), transparent 55%),
+      var(--bg);
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    line-height:1.45;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px;}
+
+  /* ---------- Top bar ---------- */
+  header.top{
+    position:sticky;top:0;z-index:40;
+    background:rgba(245,247,250,.82);
+    backdrop-filter:saturate(160%) blur(12px);
+    border-bottom:1px solid var(--line);
+  }
+  .top .wrap{display:flex;align-items:center;gap:18px;height:68px;}
+  .brand{display:flex;align-items:center;gap:12px;}
+  .logo{
+    width:38px;height:38px;border-radius:10px;
+    background:linear-gradient(150deg,var(--brisa),var(--accent));
+    display:grid;place-items:center;color:#fff;font-weight:800;font-size:19px;
+    box-shadow:0 6px 14px -6px rgba(14,77,164,.7);
+    letter-spacing:-.5px;
+  }
+  .brand b{font-weight:800;font-size:17px;letter-spacing:-.3px;}
+  .brand span{display:block;font-size:11.5px;color:var(--muted);font-weight:600;letter-spacing:.02em;margin-top:1px;}
+  .top .spacer{flex:1;}
+  .tag{
+    font-size:12px;font-weight:700;color:var(--brisa);
+    background:var(--brisa-50);border:1px solid #D5E3F8;
+    padding:6px 12px;border-radius:999px;
+  }
+  /* logos */
+  .bsub{font-size:11.5px;color:var(--muted);font-weight:600;padding-left:14px;margin-left:3px;border-left:1px solid #D7DEE7;}
+  .logoslot{display:inline-flex;align-items:center;line-height:1;}
+  .logoslot img{display:block;width:auto;}
+  .logoslot.brand{font-weight:800;font-size:21px;color:var(--brisa);letter-spacing:-.4px;}
+  .logoslot.brand img{height:30px;}
+  .logoslot.cl{font-weight:800;font-size:12px;color:#fff;letter-spacing:-.2px;}
+  .logoslot.cl img{height:15px;}
+  .pagenav{display:flex;gap:6px;}
+  .pagenav a{font-size:12.5px;font-weight:700;color:var(--ink-2);text-decoration:none;padding:7px 13px;border-radius:9px;border:1px solid var(--line);background:var(--card);box-shadow:var(--shadow-sm);transition:.15s;}
+  .pagenav a:hover{border-color:#CFD8E3;color:var(--brisa);}
+  .pagenav a.cur{background:var(--brisa);color:#fff;border-color:var(--brisa);}
+  .pagenav a{white-space:nowrap;}
+  .cl-tag{display:inline-flex;align-items:center;gap:6px;margin-left:8px;font-size:10px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:#fff;background:linear-gradient(150deg,#141B3A,#0B1020);padding:4px 9px;border-radius:7px;}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:48px 0 14px;}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--brisa);margin-bottom:16px;
+  }
+  .eyebrow::before{content:"";width:22px;height:2px;background:var(--brisa);border-radius:2px;}
+  h1{
+    font-size:40px;line-height:1.08;letter-spacing:-.025em;font-weight:800;
+    margin:0 0 14px;max-width:18ch;text-wrap:balance;
+  }
+  .lead{font-size:17px;color:var(--ink-2);max-width:62ch;margin:0;text-wrap:pretty;}
+  .pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;}
+  .pill{
+    font-size:12.5px;font-weight:600;color:var(--ink-2);
+    background:var(--card);border:1px solid var(--line);
+    padding:7px 13px;border-radius:999px;box-shadow:var(--shadow-sm);
+    display:flex;align-items:center;gap:7px;
+  }
+  .dot{width:7px;height:7px;border-radius:50%;}
+
+  /* ---------- Section ---------- */
+  section{padding:36px 0;}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:24px;}
+  .sec-num{
+    font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:500;
+    color:var(--accent);padding-top:4px;
+  }
+  .sec-head h2{font-size:24px;font-weight:800;letter-spacing:-.02em;margin:0;}
+  .sec-head p{margin:4px 0 0;color:var(--muted);font-size:14px;}
+
+  /* ---------- Architecture ---------- */
+  .arch{display:flex;flex-direction:column;gap:0;}
+  .layer{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+    box-shadow:var(--shadow-sm);padding:18px 20px;position:relative;
+  }
+  .layer-label{
+    display:flex;align-items:center;gap:10px;margin-bottom:14px;
+  }
+  .layer-label .lab-dot{width:9px;height:9px;border-radius:3px;}
+  .layer-label b{font-size:13px;font-weight:800;letter-spacing:.01em;}
+  .layer-label span{font-size:12px;color:var(--muted);font-weight:600;}
+  .nodes{display:grid;gap:12px;}
+  .nodes.c4{grid-template-columns:repeat(4,1fr);}
+  .nodes.c3{grid-template-columns:repeat(3,1fr);}
+  .nodes.c2{grid-template-columns:repeat(2,1fr);}
+  .node{
+    border:1px solid var(--line);border-radius:11px;padding:13px 14px;
+    background:linear-gradient(180deg,#fff, #FCFDFE);
+    transition:transform .16s ease, box-shadow .16s ease, border-color .16s ease;
+    cursor:default;position:relative;
+  }
+  .node:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:#CFD8E3;}
+  .node .ico{
+    width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    margin-bottom:10px;color:#fff;
+  }
+  .node .ico svg{width:17px;height:17px;}
+  .node h4{margin:0 0 3px;font-size:13.5px;font-weight:700;letter-spacing:-.01em;}
+  .node p{margin:0;font-size:11.5px;color:var(--muted);line-height:1.35;}
+  .node.hl{border-color:var(--accent);box-shadow:0 0 0 3px rgba(30,132,255,.14),var(--shadow);}
+
+  .connector{height:30px;display:grid;place-items:center;position:relative;}
+  .connector::before{content:"";width:2px;height:100%;background:linear-gradient(var(--line),#CBD5E1);}
+  .connector svg{position:absolute;bottom:-1px;color:#CBD5E1;width:14px;height:14px;background:var(--bg);}
+
+  /* ---------- Flows ---------- */
+  .tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
+  .tab{
+    border:1px solid var(--line);background:var(--card);
+    padding:12px 18px;border-radius:12px;cursor:pointer;text-align:left;
+    box-shadow:var(--shadow-sm);transition:all .16s ease;min-width:240px;
+    display:flex;gap:12px;align-items:center;font-family:inherit;
+  }
+  .tab:hover{border-color:#CFD8E3;transform:translateY(-1px);}
+  .tab.active{border-color:var(--brisa);background:var(--brisa-50);box-shadow:0 0 0 3px rgba(14,77,164,.1);}
+  .tab .tnum{
+    width:30px;height:30px;border-radius:8px;flex:none;
+    background:var(--brisa);color:#fff;font-weight:800;font-size:14px;
+    display:grid;place-items:center;
+  }
+  .tab.active .tnum{background:var(--brisa-700);}
+  .tab .tt b{display:block;font-size:13.5px;font-weight:700;letter-spacing:-.01em;}
+  .tab .tt span{font-size:11.5px;color:var(--muted);font-weight:600;}
+
+  .flow{display:none;animation:fade .35s ease;}
+  .flow.active{display:block;}
+  @keyframes fade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:none;}}
+
+  .stepper{
+    display:flex;gap:0;align-items:stretch;overflow-x:auto;padding:4px 2px 14px;
+  }
+  .step{
+    min-width:208px;flex:1;background:var(--card);border:1px solid var(--line);
+    border-radius:13px;padding:16px;box-shadow:var(--shadow-sm);position:relative;
+  }
+  .step .snum{
+    font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;
+    color:#fff;width:24px;height:24px;border-radius:7px;display:grid;place-items:center;
+    margin-bottom:11px;
+  }
+  .step h4{margin:0 0 5px;font-size:14px;font-weight:700;letter-spacing:-.01em;}
+  .step p{margin:0;font-size:12px;color:var(--muted);line-height:1.4;}
+  .step .who{
+    display:inline-block;margin-top:11px;font-size:10.5px;font-weight:700;
+    letter-spacing:.03em;text-transform:uppercase;padding:3px 8px;border-radius:6px;
+  }
+  .arrow{display:grid;place-items:center;flex:none;width:34px;color:#C2CCD8;}
+  .arrow svg{width:18px;height:18px;}
+
+  .legend{
+    display:flex;flex-wrap:wrap;gap:16px;margin-top:8px;padding:14px 16px;
+    background:var(--card);border:1px solid var(--line);border-radius:12px;box-shadow:var(--shadow-sm);
+  }
+  .legend .li{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-2);font-weight:600;}
+  .legend .sw{width:11px;height:11px;border-radius:3px;}
+
+  footer{padding:40px 0 64px;color:var(--muted);font-size:12.5px;}
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:22px;}
+
+  @media (max-width:880px){
+    h1{font-size:30px;}
+    .nodes.c4,.nodes.c3{grid-template-columns:repeat(2,1fr);}
+  }
+</style>
+</head>
+<body>
+
+<template id="__bundler_thumbnail" data-bg-color="#0E4DA4">
+  <svg viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <rect width="1200" height="800" fill="#0E4DA4"/>
+    <rect x="430" y="300" width="340" height="200" rx="32" fill="#1E84FF"/>
+    <text x="600" y="430" font-family="Manrope, sans-serif" font-size="150" font-weight="800" fill="#fff" text-anchor="middle">b</text>
+    <text x="600" y="610" font-family="Manrope, sans-serif" font-size="54" font-weight="700" fill="#BBD4F5" text-anchor="middle" letter-spacing="2">SİSTEM TASARIMI</text>
+  </svg>
+</template>
+
+<header class="top">
+  <div class="wrap">
+    <div class="brand">
+      <span class="logoslot brand" data-res="brisaLogo" data-src="https://www.brisa.com.tr/assets/images/brisa-logo.svg">brisa</span>
+      <span class="bsub">Multivendor B2B Platformu</span>
+    </div>
+    <div class="spacer"></div>
+    <nav class="pagenav">
+      <a href="index.html">Ekosistem Haritası</a>
+      <a href="sistem-tasarimi.html" class="cur">Sistem Tasarımı</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap">
+    <section class="hero">
+      <div class="eyebrow">Sistem &amp; Akış Tasarımı</div>
+      <h1>Bayiler, Brisa stokları ve multivendor satışın tek platformda buluştuğu mimari</h1>
+      <p class="lead">Brisa; bayilerin ürünlerini multivendor yapıyla satışa açtığı, bayilerin birbiri arasında fulfillment yaptığı ve her bayinin hem Brisa merkez stoğu hem de diğer bayi stokları üzerinden satış yapabildiği bir B2B + WMS platformudur. Aşağıda mimari katmanlar ve iki temel iş akışı yer alıyor.</p>
+      <div class="pills">
+        <div class="pill"><span class="dot" style="background:var(--amber)"></span>Talep · Müşteri &amp; Bayi</div>
+        <div class="pill"><span class="dot" style="background:var(--brisa)"></span>Multivendor Marketplace</div>
+        <div class="pill"><span class="dot" style="background:var(--violet)"></span>Sipariş Orkestrasyonu</div>
+        <div class="pill"><span class="dot" style="background:var(--teal)"></span>WMS &amp; Stok Havuzu</div>
+        <div class="pill"><span class="dot" style="background:var(--ink-2)"></span>Bayiler-arası Fulfillment</div>
+      </div>
+    </section>
+
+    <!-- ARCHITECTURE -->
+    <section>
+      <div class="sec-head">
+        <div class="sec-num">01</div>
+        <div>
+          <h2>Sistem Mimarisi</h2>
+          <p>Talepten tedarike üç katman. Düğümlerin üzerine gelin.</p>
+        </div>
+      </div>
+
+      <div class="arch">
+        <!-- Layer 1: Demand -->
+        <div class="layer">
+          <div class="layer-label">
+            <span class="lab-dot" style="background:var(--amber)"></span>
+            <b>Talep Katmanı</b><span>· Siparişin doğduğu yer</span>
+          </div>
+          <div class="nodes c3">
+            <div class="node" data-node="customer">
+              <div class="ico" style="background:var(--amber)">{{ICON:user}}</div>
+              <h4>Son Müşteri</h4>
+              <p>Web &amp; mobil üzerinden marketplace'ten sipariş verir.</p>
+            </div>
+            <div class="node" data-node="dealer-buyer">
+              <div class="ico" style="background:var(--amber)">{{ICON:store}}</div>
+              <h4>Bayi (Alıcı)</h4>
+              <p>Kendi satışı için Brisa + diğer bayi stoğundan tedarik eder.</p>
+            </div>
+            <div class="node" data-node="b2b">
+              <div class="ico" style="background:var(--amber)">{{ICON:cart}}</div>
+              <h4>B2B Sepeti</h4>
+              <p>Toplu sipariş, sözleşmeli fiyat ve bayi bazlı koşullar.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="connector">{{ICON:down}}</div>
+
+        <!-- Layer 2: Platform -->
+        <div class="layer">
+          <div class="layer-label">
+            <span class="lab-dot" style="background:var(--brisa)"></span>
+            <b>Platform Katmanı</b><span>· Brisa çekirdeği</span>
+            <span class="cl-tag">powered by <span class="logoslot cl" data-res="clLogo" data-src="https://commercelab.com.tr/wp-content/uploads/2024/10/logo-w.svg">CommerceLab</span></span>
+          </div>
+          <div class="nodes c4">
+            <div class="node" data-node="market">
+              <div class="ico" style="background:var(--brisa)">{{ICON:grid}}</div>
+              <h4>Multivendor Marketplace</h4>
+              <p>Bayi ürünlerini tek katalogda satışa açar.</p>
+            </div>
+            <div class="node" data-node="orchestration">
+              <div class="ico" style="background:var(--violet)">{{ICON:flow}}</div>
+              <h4>Sipariş Orkestrasyonu</h4>
+              <p>Siparişi doğru stok &amp; bayiye yönlendirir (routing).</p>
+            </div>
+            <div class="node" data-node="vendor-engine">
+              <div class="ico" style="background:var(--violet)">{{ICON:layers}}</div>
+              <h4>Multivendor Motoru</h4>
+              <p>Komisyon, hak ediş ve vendor mutabakatı.</p>
+            </div>
+            <div class="node" data-node="dealer-mgmt">
+              <div class="ico" style="background:var(--brisa)">{{ICON:users}}</div>
+              <h4>Bayi Yönetimi</h4>
+              <p>Bayi onayı, yetki, fiyat &amp; stok politikaları.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="connector">{{ICON:down}}</div>
+
+        <!-- Layer 3: Supply -->
+        <div class="layer">
+          <div class="layer-label">
+            <span class="lab-dot" style="background:var(--teal)"></span>
+            <b>Tedarik &amp; Operasyon Katmanı</b><span>· Stok havuzu ve fulfillment</span>
+          </div>
+          <div class="nodes c4">
+            <div class="node" data-node="central-stock">
+              <div class="ico" style="background:var(--teal)">{{ICON:box}}</div>
+              <h4>Brisa Merkez Stok</h4>
+              <p>Ana depo envanteri, tüm bayilere açık havuz.</p>
+            </div>
+            <div class="node" data-node="dealer-stock">
+              <div class="ico" style="background:var(--teal)">{{ICON:boxes}}</div>
+              <h4>Bayi Stokları</h4>
+              <p>Her bayinin kendi envanteri; satışa &amp; transfere açık.</p>
+            </div>
+            <div class="node" data-node="wms">
+              <div class="ico" style="background:var(--teal)">{{ICON:warehouse}}</div>
+              <h4>WMS</h4>
+              <p>Depo, raf, toplama (pick) &amp; sevkiyat yönetimi.</p>
+            </div>
+            <div class="node" data-node="fulfillment">
+              <div class="ico" style="background:var(--ink-2)">{{ICON:truck}}</div>
+              <h4>Bayiler-arası Fulfillment</h4>
+              <p>Bir bayinin siparişini başka bir bayi/merkez karşılar.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FLOWS -->
+    <section>
+      <div class="sec-head">
+        <div class="sec-num">02</div>
+        <div>
+          <h2>Temel Akışlar</h2>
+          <p>İki senaryo. Sekmeyi değiştirin; ilgili mimari düğümler vurgulanır.</p>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" data-flow="f1">
+          <span class="tnum">1</span>
+          <span class="tt"><b>Multivendor Satış</b><span>Bayi ürünü Brisa'da satılır</span></span>
+        </button>
+        <button class="tab" data-flow="f2">
+          <span class="tnum">2</span>
+          <span class="tt"><b>Bayi Kendi Satışı</b><span>Brisa + diğer bayi stoğu üzerinden fulfillment</span></span>
+        </button>
+      </div>
+
+      <!-- FLOW 1 -->
+      <div class="flow active" id="f1">
+        <div class="stepper">
+          <div class="step">
+            <div class="snum" style="background:var(--amber)">01</div>
+            <h4>Müşteri sipariş verir</h4>
+            <p>Son müşteri marketplace'te bir bayiye ait ürünü sepete ekleyip öder.</p>
+            <span class="who" style="background:var(--amber-50);color:var(--amber)">Müşteri</span>
+          </div>
+          <div class="arrow">{{ICON:right}}</div>
+          <div class="step">
+            <div class="snum" style="background:var(--brisa)">02</div>
+            <h4>Vendor'a yönlendirme</h4>
+            <p>Orkestrasyon, siparişi ürün sahibi bayiye (vendor) atar; stok rezerve edilir.</p>
+            <span class="who" style="background:var(--brisa-50);color:var(--brisa)">Platform</span>
+          </div>
+          <div class="arrow">{{ICON:right}}</div>
+          <div class="step">
+            <div class="snum" style="background:var(--teal)">03</div>
+            <h4>WMS toplama &amp; sevk</h4>
+            <p>İlgili bayinin deposunda WMS ile pick-pack yapılır, kargoya verilir.</p>
+            <span class="who" style="background:var(--teal-50);color:var(--teal)">WMS / Bayi</span>
+          </div>
+          <div class="arrow">{{ICON:right}}</div>
+          <div class="step">
+            <div class="snum" style="background:var(--violet)">04</div>
+            <h4>Hak ediş &amp; mutabakat</h4>
+            <p>Multivendor motoru komisyonu keser, bayinin hak edişini hesaplar.</p>
+            <span class="who" style="background:var(--violet-50);color:var(--violet)">Multivendor</span>
+          </div>
+        </div>
+        <div class="legend">
+          <div class="li"><span class="sw" style="background:var(--amber)"></span>Talep doğar</div>
+          <div class="li"><span class="sw" style="background:var(--brisa)"></span>Platform yönlendirir</div>
+          <div class="li"><span class="sw" style="background:var(--teal)"></span>Operasyon karşılar</div>
+          <div class="li"><span class="sw" style="background:var(--violet)"></span>Finansal mutabakat</div>
+        </div>
+      </div>
+
+      <!-- FLOW 2 -->
+      <div class="flow" id="f2">
+        <div class="stepper">
+          <div class="step">
+            <div class="snum" style="background:var(--amber)">01</div>
+            <h4>Bayi sipariş alır</h4>
+            <p>Bayi kendi müşterisine satış yapar; istenen ürün kendi stoğunda yok/yetersiz.</p>
+            <span class="who" style="background:var(--amber-50);color:var(--amber)">Bayi (Alıcı)</span>
+          </div>
+          <div class="arrow">{{ICON:right}}</div>
+          <div class="step">
+            <div class="snum" style="background:var(--brisa)">02</div>
+            <h4>Havuz stok sorgusu</h4>
+            <p>Sistem Brisa merkez stoğu + diğer bayi stoklarını tek havuz olarak sorgular.</p>
+            <span class="who" style="background:var(--brisa-50);color:var(--brisa)">Platform</span>
+          </div>
+          <div class="arrow">{{ICON:right}}</div>
+          <div class="step">
+            <div class="snum" style="background:var(--ink-2)">03</div>
+            <h4>Kaynak seçimi</h4>
+            <p>En uygun kaynak (merkez ya da en yakın bayi) seçilir, transfer açılır.</p>
+            <span class="who" style="background:#EEF1F5;color:var(--ink-2)">Fulfillment</span>
+          </div>
+          <div class="arrow">{{ICON:right}}</div>
+          <div class="step">
+            <div class="snum" style="background:var(--teal)">04</div>
+            <h4>Transfer &amp; teslim</h4>
+            <p>WMS kaynak deposunda toplama yapar; ürün talep eden bayiye/müşteriye ulaşır.</p>
+            <span class="who" style="background:var(--teal-50);color:var(--teal)">WMS</span>
+          </div>
+        </div>
+        <div class="legend">
+          <div class="li"><span class="sw" style="background:var(--amber)"></span>Bayi talebi</div>
+          <div class="li"><span class="sw" style="background:var(--brisa)"></span>Havuz sorgusu</div>
+          <div class="li"><span class="sw" style="background:var(--ink-2)"></span>Akıllı kaynak seçimi</div>
+          <div class="li"><span class="sw" style="background:var(--teal)"></span>Transfer &amp; teslim</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <span>Brisa · Multivendor B2B · WMS · Bayi Yönetimi · powered by CommerceLab</span>
+      <span>Sistem Tasarımı · 5 Haziran 2026</span>
+    </div>
+  </footer>
+</main>
+
+<script>
+  // ---- Icon set (inline, single source) ----
+  const ICONS = {
+    user:'<path d="M12 12a4 4 0 100-8 4 4 0 000 8zM4 20a8 8 0 0116 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+    store:'<path d="M4 9l1-4h14l1 4M4 9v10h16V9M4 9h16M9 19v-5h6v5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
+    cart:'<path d="M4 5h2l2 11h10l2-8H7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="10" cy="20" r="1.4" fill="currentColor"/><circle cx="18" cy="20" r="1.4" fill="currentColor"/>',
+    grid:'<path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
+    flow:'<path d="M5 6h6M5 6a2 2 0 11-.001-.001M13 12h6M13 12a2 2 0 11-.001-.001M5 18h6M5 18a2 2 0 11-.001-.001" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+    layers:'<path d="M12 3l9 5-9 5-9-5 9-5zM3 13l9 5 9-5M3 17l9 5 9-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
+    users:'<path d="M9 11a3.5 3.5 0 100-7 3.5 3.5 0 000 7zM2.5 20a6.5 6.5 0 0113 0M16 11a3.5 3.5 0 000-7M21.5 20a6.5 6.5 0 00-5-6.3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
+    box:'<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9L12 3zM4 7.5l8 4.5 8-4.5M12 12v9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
+    boxes:'<path d="M7 8l5-2.5L17 8v5l-5 2.5L7 13V8zM7 8l5 2.5L17 8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M3 17l3-1.5M21 17l-3-1.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
+    warehouse:'<path d="M3 21V9l9-5 9 5v12M7 21v-7h10v7M3 21h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>',
+    truck:'<path d="M3 6h11v9H3zM14 9h4l3 3v3h-7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="7" cy="18" r="1.6" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="18" r="1.6" fill="none" stroke="currentColor" stroke-width="1.8"/>',
+    down:'<path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+    right:'<path d="M5 12h13M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
+  };
+  document.body.innerHTML = document.body.innerHTML.replace(/\{\{ICON:(\w+)\}\}/g, (m,k)=>
+    `<svg viewBox="0 0 24 24" aria-hidden="true">${ICONS[k]||''}</svg>`);
+
+  // ---- Flow tabs + node highlight ----
+  const HIGHLIGHT = {
+    f1:['customer','market','orchestration','dealer-stock','wms','vendor-engine'],
+    f2:['dealer-buyer','orchestration','central-stock','dealer-stock','fulfillment','wms']
+  };
+  const tabs = document.querySelectorAll('.tab');
+  const flows = document.querySelectorAll('.flow');
+  const nodes = document.querySelectorAll('.node');
+
+  function setFlow(id){
+    tabs.forEach(t=>t.classList.toggle('active', t.dataset.flow===id));
+    flows.forEach(f=>f.classList.toggle('active', f.id===id));
+    const set = new Set(HIGHLIGHT[id]||[]);
+    nodes.forEach(n=>n.classList.toggle('hl', set.has(n.dataset.node)));
+  }
+  tabs.forEach(t=>t.addEventListener('click',()=>setFlow(t.dataset.flow)));
+  setFlow('f1');
+
+  // ---- Logos: wordmark default, upgrade to real logo if it loads ----
+  document.querySelectorAll('.logoslot').forEach(slot=>{
+    const src=(window.__resources&&slot.dataset.res&&window.__resources[slot.dataset.res])||slot.dataset.src; if(!src) return;
+    const probe=new Image();
+    probe.onload=()=>{ if(probe.naturalWidth>0){ const i=document.createElement('img'); i.src=src; i.alt=slot.textContent.trim(); slot.textContent=''; slot.appendChild(i); } };
+    probe.src=src;
+  });
+</script>
+</body>
+</html>
