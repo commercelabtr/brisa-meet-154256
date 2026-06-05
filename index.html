@@ -489,8 +489,8 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
     // Birleşen kanallar (aynı seviye)
     {id:'onl',   x:281, y:256, w:230, t:'Online',          s:'e-ticaret',     icon:'globe',   c:'#E8820E'},
     {id:'mag',   x:620, y:256, w:230, t:'Mağaza / Instore',s:'POS · mağaza',  icon:'store',   c:'#E8820E'},
-    {id:'bayi',  x:980, y:256, w:230, t:'Bayiler',         s:'Bayi 1 … Bayi n',icon:'network',c:'#1E84FF'},
-    {id:'altb',  x:980, y:62,  w:230, t:'Alt Bayiler',     s:'bayi ağı',       icon:'network',c:'#1E84FF'},
+    {id:'altb',  x:980, y:256, w:230, t:'Alt Bayiler',     s:'bayi ağı',       icon:'network',c:'#1E84FF'},
+    {id:'bayi',  x:980, y:404, w:230, t:'Bayiler',         s:'Bayi 1 … Bayi n',icon:'network',c:'#1E84FF'},
     // Birleşme düğümü
     {id:'merge', x:560, y:404, w:230, t:'Bayi',             s:'B2B / B2B2C / B2C', icon:'store', c:'#1E84FF'},
     // Çekirdek + Lastik
@@ -538,12 +538,9 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
   plain(`M ${Math.min(...cxs,M.merge.x)} ${COL} H ${Math.max(...cxs,M.merge.x)}`,'bus');
   line(`M ${M.merge.x} ${COL} V ${top(M.merge)}`);
 
-  // 2b) Bayi + Bayiler alttan birleşip -> Brisa
-  const MB=480;
-  plain(`M ${M.merge.x} ${bot(M.merge)} V ${MB}`);
-  plain(`M ${M.bayi.x} ${bot(M.bayi)} V ${MB}`);
-  plain(`M ${M.merge.x} ${MB} H ${M.bayi.x}`,'bus');
-  line(`M ${M.merge.x} ${MB} V ${top(M.brisa)}`);
+  // 2b) Bayiler (Bayi 1..n) -> Bayi (aynı seviye) ; Bayi -> Brisa
+  line(`M ${L(M.bayi)} ${M.merge.y} H ${R(M.merge)}`);
+  line(`M ${M.merge.x} ${bot(M.merge)} V ${top(M.brisa)}`);
 
   // 3) Brisa <-> Lastik (yatay çift yön)
   edges+=`<path class="fc-edge" d="M ${R(M.brisa)} ${M.brisa.y} H ${L(M.last)}" marker-end="url(#fcArr)" marker-start="url(#fcArr)"/>`;
