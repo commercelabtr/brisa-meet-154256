@@ -489,6 +489,7 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
     {id:'onl',   x:281, y:256, w:230, t:'Online',          s:'e-ticaret',     icon:'globe',   c:'#E8820E'},
     {id:'mag',   x:620, y:256, w:230, t:'Mağaza / Instore',s:'POS · mağaza',  icon:'store',   c:'#E8820E'},
     {id:'bayi',  x:980, y:256, w:230, t:'Bayiler',         s:'Bayi 1 … Bayi n',icon:'network',c:'#1E84FF'},
+    {id:'altb',  x:980, y:62,  w:230, t:'Alt Bayiler',     s:'bayi ağı',       icon:'network',c:'#1E84FF'},
     // Çekirdek + Lastik
     {id:'brisa', x:560, y:498, w:300, core:true, t:'Brisa', s:'multivendor · OMS · stok havuzu'},
     {id:'last',  x:965, y:498, w:210, t:'Lastik.com.tr', s:'e-ticaret kanalı', icon:'globe', c:'#E8820E'},
@@ -520,6 +521,9 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
   plain(`M ${M.mps.x} ${bot(M.mps)} V ${EXT}`);
   plain(`M ${M.own.x} ${EXT} H ${M.mps.x}`,'bus');
   line(`M ${M.onl.x} ${EXT} V ${top(M.onl)}`);
+
+  // 1b) Bayiler -> Alt Bayiler (yukarı ok)
+  line(`M ${M.bayi.x} ${top(M.bayi)} V ${bot(M.altb)}`);
 
   // 2) kanallar (Online, Mağaza, Bayiler) -> Satış bus -> Brisa
   channels.forEach(id=>plain(`M ${M[id].x} ${bot(M[id])} V ${COL}`));
@@ -562,7 +566,7 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
   // band labels (sol kenar)
   const bands=`
     <text class="fc-band" x="40" y="${COL+5}">SATIŞ</text>
-    <text class="fc-band" x="40" y="${BUS2+5}">STOK</text>
+    <text class="fc-band" x="40" y="${BUS2+5}">STOK <tspan fill="#94A3B8" font-weight="700">· FULFILMENT</tspan></text>
     <text class="fc-tierlabel" x="40" y="${66}">ONLINE</text>
     <text class="fc-tierlabel" x="40" y="${260}">KANALLAR</text>
     <text class="fc-tierlabel" x="1090" y="${498+5}">PLATFORM</text>`;
