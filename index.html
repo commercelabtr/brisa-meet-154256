@@ -486,6 +486,7 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
     // Online uzantıları (üstte, küçük)
     {id:'own',   x:170, y:62,  w:200, t:'owndigital', s:'kendi dijital kanal', icon:'globe',  c:'#E8820E'},
     {id:'mps',   x:392, y:62,  w:200, t:'MPS / MP',   s:'pazaryerleri',        icon:'market', c:'#E8820E'},
+    {id:'altb2', x:614, y:62,  w:200, t:'Alt Bayiler', s:'bayi ağı',         icon:'network',c:'#1E84FF'},
     // Birleşen kanallar (aynı seviye)
     {id:'onl',   x:281, y:256, w:230, t:'Online',          s:'e-ticaret',     icon:'globe',   c:'#E8820E'},
     {id:'mag',   x:620, y:256, w:230, t:'Mağaza / Instore',s:'POS · mağaza',  icon:'store',   c:'#E8820E'},
@@ -516,31 +517,32 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
 
   // bus y-levels
   const EXT=158, COL=345, BUS2=708;
-  const channels=['onl','mag'];
+  const channels=['onl','mag','altb'];
   const whs=['wh1','whn','wa1','wan'];
 
   let edges='';   // path d strings (with class)
   const line=(d,cls)=>{ edges+=`<path class="fc-edge ${cls||''}" d="${d}" marker-end="url(#fcArr)"/>`; };
   const plain=(d,cls)=>{ edges+=`<path class="fc-edge ${cls||''}" d="${d}"/>`; };
 
-  // 1) Online uzantıları (owndigital, MPS/MP) -> Online
+  // 1) Online uzantıları (owndigital, MPS/MP, Alt Bayiler) -> Online
   plain(`M ${M.own.x} ${bot(M.own)} V ${EXT}`);
   plain(`M ${M.mps.x} ${bot(M.mps)} V ${EXT}`);
-  plain(`M ${M.own.x} ${EXT} H ${M.mps.x}`,'bus');
+  plain(`M ${M.altb2.x} ${bot(M.altb2)} V ${EXT}`);
+  plain(`M ${M.own.x} ${EXT} H ${M.altb2.x}`,'bus');
   line(`M ${M.onl.x} ${EXT} V ${top(M.onl)}`);
 
-  // 1b) Bayiler -> Alt Bayiler (yukarı ok)
-  line(`M ${M.bayi.x} ${top(M.bayi)} V ${bot(M.altb)}`);
-
-  // 2) Online, Mağaza -> Satış bus -> Bayi (birleşme)
+  // 2) Online, Mağaza, Alt Bayiler -> Satış bus -> Bayi (birleşme)
   channels.forEach(id=>plain(`M ${M[id].x} ${bot(M[id])} V ${COL}`));
   const cxs=channels.map(id=>M[id].x);
   plain(`M ${Math.min(...cxs,M.merge.x)} ${COL} H ${Math.max(...cxs,M.merge.x)}`,'bus');
   line(`M ${M.merge.x} ${COL} V ${top(M.merge)}`);
 
-  // 2b) Bayiler (Bayi 1..n) -> Bayi (aynı seviye) ; Bayi -> Brisa
-  line(`M ${L(M.bayi)} ${M.merge.y} H ${R(M.merge)}`);
-  line(`M ${M.merge.x} ${bot(M.merge)} V ${top(M.brisa)}`);
+  // 2b) Bayiler + Bayi altta birleşip -> Brisa
+  const MB=480;
+  plain(`M ${M.merge.x} ${bot(M.merge)} V ${MB}`);
+  plain(`M ${M.bayi.x} ${bot(M.bayi)} V ${MB}`);
+  plain(`M ${M.merge.x} ${MB} H ${M.bayi.x}`,'bus');
+  line(`M ${M.merge.x} ${MB} V ${top(M.brisa)}`);
 
   // 3) Brisa <-> Lastik (yatay çift yön)
   edges+=`<path class="fc-edge" d="M ${R(M.brisa)} ${M.brisa.y} H ${L(M.last)}" marker-end="url(#fcArr)" marker-start="url(#fcArr)"/>`;
