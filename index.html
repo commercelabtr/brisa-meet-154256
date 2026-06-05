@@ -190,7 +190,13 @@
   .fm-conn{display:flex;align-items:center;justify-content:flex-start;gap:10px;padding:10px 0 10px 80px;color:var(--muted);}
   .fm-conn span{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--brisa);background:#EAF1FB;border:1px solid #D5E3F8;padding:4px 11px;border-radius:999px;}
   .fm-conn svg{width:18px;height:18px;color:var(--brisa);}
-  @media (max-width:860px){.fm-tier{grid-template-columns:1fr;gap:10px;}.fm-conn{padding-left:10px;}}
+  .fm-sub{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch;flex:1;}
+  .fm-group{flex:1;min-width:240px;background:#F7F9FC;border:1px dashed #CBD5E1;border-radius:13px;padding:11px 12px;}
+  .fm-group .fm-gt{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin:0 0 9px 2px;display:flex;align-items:center;gap:7px;}
+  .fm-group .fm-gt svg{width:15px;height:15px;flex:none;color:var(--tc);}
+  .fm-group .fm-gt b{color:var(--ink);font-size:11.5px;}
+  .fm-group .fm-row{gap:8px;}
+  @media (max-width:860px){.fm-tier{grid-template-columns:1fr;gap:10px;}.fm-conn{padding-left:10px;}.fm-sub{flex-direction:column;}}
 </style>
 </head>
 <body>
@@ -217,7 +223,7 @@
       <div class="head" style="padding-bottom:0">
         <div class="eyebrow">00 · Uçtan Uca Akış</div>
         <h1 style="max-width:30ch">Satış kanallarından bayilere, Brisa çekirdeğinden depolara</h1>
-        <p class="lead">Sipariş kanalları (owndigital, pazaryerleri/MP, online ve alt bayiler) bayiler üzerinden satışa dönüşür; tüm bayiler Brisa çekirdeği ve Lastik.com.tr ile buluşur; stok ve fulfillment Brisa depoları ile bayi depolarından karşılanır.</p>
+        <p class="lead">Sipariş kanalları (owndigital, POS, MPS/MP, online ve alt bayiler) bayiler üzerinden satışa dönüşür; tüm bayiler BTP, Brisa çekirdeği ve Lastik.com.tr ile buluşur; SBK (fulfilment) ile stok hem Brisa depolarından hem de bayi depolarından karşılanır.</p>
       </div>
 
       <div class="fm-tiers">
@@ -227,7 +233,8 @@
           <div class="fm-tlabel"><b>Satış Kaynakları</b><span>kanal · talep</span></div>
           <div class="fm-row">
             <div class="fm-node"><div class="fm-ico">{{IC:globe}}</div><div><b>owndigital</b><em>kendi dijital kanal</em></div></div>
-            <div class="fm-node"><div class="fm-ico">{{IC:market}}</div><div><b>MP / MPS</b><em>pazaryerleri</em></div></div>
+            <div class="fm-node"><div class="fm-ico">{{IC:store}}</div><div><b>POS</b><em>mağaza satışı</em></div></div>
+            <div class="fm-node"><div class="fm-ico">{{IC:market}}</div><div><b>MPS / MP</b><em>pazaryerleri</em></div></div>
             <div class="fm-node"><div class="fm-ico">{{IC:globe}}</div><div><b>Online</b><em>e-ticaret</em></div></div>
             <div class="fm-node"><div class="fm-ico">{{IC:network}}</div><div><b>Alt Bayiler</b><em>bayi ağı</em></div></div>
           </div>
@@ -248,28 +255,40 @@
 
         <div class="fm-conn">{{IC:arrowdown}}<span>Brisa çekirdeği</span></div>
 
-        <!-- Tier 3: Çekirdek + Lastik.com -->
+        <!-- Tier 3: BTP · Brisa · Lastik.com -->
         <div class="fm-tier" style="--tc:#0E4DA4">
           <div class="fm-tlabel"><b>Platform Çekirdeği</b><span>orkestrasyon</span></div>
           <div class="fm-row">
+            <div class="fm-node" style="--tc:#0E9F8E"><div class="fm-ico">{{IC:layers}}</div><div><b>BTP</b><em>brisa teknoloji platformu</em></div></div>
+            <div class="fm-dots">⇄</div>
             <div class="fm-node fm-core"><div class="fm-ico">b</div><div><b>Brisa</b><em>multivendor · OMS · stok havuzu</em></div></div>
             <div class="fm-dots">⇄</div>
             <div class="fm-node" style="--tc:#E8820E"><div class="fm-ico">{{IC:globe}}</div><div><b>Lastik.com.tr</b><em>e-ticaret kanalı</em></div></div>
           </div>
         </div>
 
-        <div class="fm-conn">{{IC:arrowdown}}<span>stok &amp; fulfillment</span></div>
+        <div class="fm-conn">{{IC:arrowdown}}<span>SBK (fulfilment)</span></div>
 
-        <!-- Tier 4: Depolar -->
+        <!-- Tier 4: SBK fulfilment — Brisa depoları + bayi depoları -->
         <div class="fm-tier" style="--tc:#0E9F8E">
-          <div class="fm-tlabel"><b>Stok &amp; Fulfillment</b><span>depolar</span></div>
-          <div class="fm-row">
-            <div class="fm-node"><div class="fm-ico">{{IC:warehouse}}</div><div><b>Brisa WH 1</b><em>merkez depo</em></div></div>
-            <div class="fm-dots">···</div>
-            <div class="fm-node"><div class="fm-ico">{{IC:warehouse}}</div><div><b>Brisa WH n</b><em>merkez depo</em></div></div>
-            <div class="fm-node" style="--tc:#6C4BD8"><div class="fm-ico">{{IC:box}}</div><div><b>Bayi Depo 1</b><em>bayi stoku</em></div></div>
-            <div class="fm-dots">···</div>
-            <div class="fm-node" style="--tc:#6C4BD8"><div class="fm-ico">{{IC:box}}</div><div><b>Bayi Depo n</b><em>bayi stoku</em></div></div>
+          <div class="fm-tlabel"><b>SBK · Fulfilment</b><span>stok &amp; sevk</span></div>
+          <div class="fm-sub">
+            <div class="fm-group">
+              <div class="fm-gt">{{IC:warehouse}} <b>Brisa Depoları</b></div>
+              <div class="fm-row">
+                <div class="fm-node"><div class="fm-ico">{{IC:warehouse}}</div><div><b>WH 1</b><em>merkez depo</em></div></div>
+                <div class="fm-dots">···</div>
+                <div class="fm-node"><div class="fm-ico">{{IC:warehouse}}</div><div><b>WH n</b><em>merkez depo</em></div></div>
+              </div>
+            </div>
+            <div class="fm-group" style="--tc:#6C4BD8">
+              <div class="fm-gt">{{IC:store}} <b>Bayiler &amp; Depoları</b></div>
+              <div class="fm-row">
+                <div class="fm-node" style="--tc:#6C4BD8"><div class="fm-ico">{{IC:store}}</div><div><b>Bayi 1</b><em>WHA depo</em></div></div>
+                <div class="fm-dots">···</div>
+                <div class="fm-node" style="--tc:#6C4BD8"><div class="fm-ico">{{IC:store}}</div><div><b>Bayi n</b><em>WHA depo</em></div></div>
+              </div>
+            </div>
           </div>
         </div>
 
