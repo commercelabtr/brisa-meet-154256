@@ -206,8 +206,8 @@
     <section class="flowmap" id="akis">
       <div class="head" style="padding-bottom:0">
         <div class="eyebrow">00 · Uçtan Uca Akış</div>
-        <h1 style="max-width:30ch">Satış kanallarından bayilere, Brisa’dan depolara</h1>
-        <p class="lead">Satış kanalları (owndigital, MPS/MP, online, alt bayiler) bayiler üzerinden <b>satış</b> akışını başlatır; tüm bayiler Brisa ve Lastik.com.tr ile buluşur; <b>SBK (fulfilment)</b> ile sipariş hem Brisa depolarından hem de bayi depolarından karşılanır.</p>
+        <h1 style="max-width:30ch">Online, mağaza ve bayiler birleşir; Brisa’dan depolara akar</h1>
+        <p class="lead">Online (owndigital, MPS/MP uzantılarıyla), mağaza/instore ve bayiler aynı seviyede birleşip <b>satış</b> akışını oluşturur; Brisa ve Lastik.com.tr ile buluşur; <b>stok</b> akışıyla sipariş hem Brisa depolarından hem de bayi depolarından (WHA) karşılanır.</p>
       </div>
 
       <div class="fc-stage">
@@ -482,27 +482,24 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
   const VW=1300;
   // node defs: x,y = center
   const FN=[
-    // tier 1 — satış kanalları
-    {id:'own',   x:235, y:66,  w:200, t:'owndigital', s:'kendi dijital kanal', icon:'globe',   c:'#E8820E'},
-    {id:'mps',   x:470, y:66,  w:200, t:'MPS / MP',   s:'pazaryerleri',        icon:'market',  c:'#E8820E'},
-    {id:'onl',   x:705, y:66,  w:200, t:'Online',     s:'e-ticaret',           icon:'globe',   c:'#E8820E'},
-    {id:'alt',   x:945, y:66,  w:210, t:'Alt Bayiler',s:'bayi ağı',            icon:'network', c:'#E8820E'},
-    // tier 2 — bayiler
-    {id:'b1',    x:455, y:262, w:175, t:'Bayi 1', s:'satıcı', icon:'store', c:'#1E84FF'},
-    {id:'b2',    x:650, y:262, w:175, t:'Bayi 2', s:'satıcı', icon:'store', c:'#1E84FF'},
-    {id:'bd',    x:792, y:262, dots:true},
-    {id:'bn',    x:915, y:262, w:175, t:'Bayi n', s:'satıcı', icon:'store', c:'#1E84FF'},
-    // tier 3 — Brisa + Lastik
-    {id:'brisa', x:560, y:470, w:300, core:true, t:'Brisa', s:'multivendor · OMS · stok havuzu'},
-    {id:'last',  x:955, y:470, w:210, t:'Lastik.com.tr', s:'e-ticaret kanalı', icon:'globe', c:'#E8820E'},
-    // tier 4 — SBK fulfilment (Brisa depoları)
-    {id:'wh1',   x:300, y:768, w:165, t:'WH 1', s:'merkez depo', icon:'warehouse', c:'#0E9F8E'},
-    {id:'whd',   x:432, y:768, dots:true},
-    {id:'whn',   x:540, y:768, w:165, t:'WH n', s:'merkez depo', icon:'warehouse', c:'#0E9F8E'},
-    // tier 4 — bayi depoları (WHA)
-    {id:'wa1',   x:820, y:768, w:165, t:'WHA · Bayi 1', s:'bayi deposu', icon:'store', c:'#6C4BD8'},
-    {id:'wad',   x:952, y:768, dots:true},
-    {id:'wan',   x:1062,y:768, w:165, t:'WHA · Bayi n', s:'bayi deposu', icon:'store', c:'#6C4BD8'},
+    // Online uzantıları (üstte, küçük)
+    {id:'own',   x:170, y:62,  w:200, t:'owndigital', s:'kendi dijital kanal', icon:'globe',  c:'#E8820E'},
+    {id:'mps',   x:392, y:62,  w:200, t:'MPS / MP',   s:'pazaryerleri',        icon:'market', c:'#E8820E'},
+    // Birleşen kanallar (aynı seviye)
+    {id:'onl',   x:281, y:256, w:230, t:'Online',          s:'e-ticaret',     icon:'globe',   c:'#E8820E'},
+    {id:'mag',   x:620, y:256, w:230, t:'Mağaza / Instore',s:'POS · mağaza',  icon:'store',   c:'#E8820E'},
+    {id:'bayi',  x:980, y:256, w:230, t:'Bayiler',         s:'Bayi 1 … Bayi n',icon:'network',c:'#1E84FF'},
+    // Çekirdek + Lastik
+    {id:'brisa', x:560, y:498, w:300, core:true, t:'Brisa', s:'multivendor · OMS · stok havuzu'},
+    {id:'last',  x:965, y:498, w:210, t:'Lastik.com.tr', s:'e-ticaret kanalı', icon:'globe', c:'#E8820E'},
+    // Stok fulfilment (Brisa depoları)
+    {id:'wh1',   x:300, y:792, w:165, t:'WH 1', s:'merkez depo', icon:'warehouse', c:'#0E9F8E'},
+    {id:'whd',   x:432, y:792, dots:true},
+    {id:'whn',   x:540, y:792, w:165, t:'WH n', s:'merkez depo', icon:'warehouse', c:'#0E9F8E'},
+    // Stok fulfilment (bayi depoları · WHA)
+    {id:'wa1',   x:820, y:792, w:165, t:'WHA · Bayi 1', s:'bayi deposu', icon:'store', c:'#6C4BD8'},
+    {id:'wad',   x:952, y:792, dots:true},
+    {id:'wan',   x:1062,y:792, w:165, t:'WHA · Bayi n', s:'bayi deposu', icon:'store', c:'#6C4BD8'},
   ];
   const M=Object.fromEntries(FN.map(n=>[n.id,n]));
   const H=n=>n.core?80:62;                    // node height
@@ -510,30 +507,30 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
   const L=n=>n.x-n.w/2, R=n=>n.x+n.w/2;
 
   // bus y-levels
-  const BUS1=170, COL=362, BUS2=620;
-  const channels=['own','mps','onl','alt'];
-  const dealers=['b1','b2','bn'];
+  const EXT=158, COL=388, BUS2=648;
+  const channels=['onl','mag','bayi'];
   const whs=['wh1','whn','wa1','wan'];
 
   let edges='';   // path d strings (with class)
-  const line=(d,cls)=>{ edges+=`<path class="fc-edge ${cls||''}" d="${d}" ${cls==='bus'?'':'marker-end="url(#fcArr)"'}/>`; };
+  const line=(d,cls)=>{ edges+=`<path class="fc-edge ${cls||''}" d="${d}" marker-end="url(#fcArr)"/>`; };
   const plain=(d,cls)=>{ edges+=`<path class="fc-edge ${cls||''}" d="${d}"/>`; };
 
-  // 1) channels -> BUS1 (down), bus, BUS1 -> dealers (down, arrow)
-  channels.forEach(id=>plain(`M ${M[id].x} ${bot(M[id])} V ${BUS1}`));
-  const cxs=channels.map(id=>M[id].x), dxs=dealers.map(id=>M[id].x);
-  plain(`M ${Math.min(...cxs,...dxs)} ${BUS1} H ${Math.max(...cxs,...dxs)}`,'bus');
-  dealers.forEach(id=>line(`M ${M[id].x} ${BUS1} V ${top(M[id])}`));
+  // 1) Online uzantıları (owndigital, MPS/MP) -> Online
+  plain(`M ${M.own.x} ${bot(M.own)} V ${EXT}`);
+  plain(`M ${M.mps.x} ${bot(M.mps)} V ${EXT}`);
+  plain(`M ${M.own.x} ${EXT} H ${M.mps.x}`,'bus');
+  line(`M ${M.onl.x} ${EXT} V ${top(M.onl)}`);
 
-  // 2) dealers -> COL bus -> Brisa (label: Satış)
-  dealers.forEach(id=>plain(`M ${M[id].x} ${bot(M[id])} V ${COL}`));
-  plain(`M ${Math.min(...dxs)} ${COL} H ${Math.max(...dxs)}`,'bus');
+  // 2) kanallar (Online, Mağaza, Bayiler) -> Satış bus -> Brisa
+  channels.forEach(id=>plain(`M ${M[id].x} ${bot(M[id])} V ${COL}`));
+  const cxs=channels.map(id=>M[id].x);
+  plain(`M ${Math.min(...cxs,M.brisa.x)} ${COL} H ${Math.max(...cxs,M.brisa.x)}`,'bus');
   line(`M ${M.brisa.x} ${COL} V ${top(M.brisa)}`);
 
   // 3) Brisa <-> Lastik (yatay çift yön)
   edges+=`<path class="fc-edge" d="M ${R(M.brisa)} ${M.brisa.y} H ${L(M.last)}" marker-end="url(#fcArr)" marker-start="url(#fcArr)"/>`;
 
-  // 4) Brisa -> BUS2 -> warehouses (label: SBK fulfilment)
+  // 4) Brisa -> Stok bus -> depolar
   plain(`M ${M.brisa.x} ${bot(M.brisa)} V ${BUS2}`);
   const wxs=whs.map(id=>M[id].x);
   plain(`M ${Math.min(...wxs)} ${BUS2} H ${Math.max(...wxs)}`,'bus');
@@ -565,10 +562,10 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
   // band labels (sol kenar)
   const bands=`
     <text class="fc-band" x="40" y="${COL+5}">SATIŞ</text>
-    <text class="fc-band" x="40" y="${BUS2+5}">SBK · FULFILMENT</text>
-    <text class="fc-tierlabel" x="40" y="${70}">KANALLAR</text>
-    <text class="fc-tierlabel" x="40" y="${266}">BAYİLER</text>
-    <text class="fc-tierlabel" x="1060" y="${470+5}">PLATFORM</text>`;
+    <text class="fc-band" x="40" y="${BUS2+5}">STOK</text>
+    <text class="fc-tierlabel" x="40" y="${66}">ONLINE</text>
+    <text class="fc-tierlabel" x="40" y="${260}">KANALLAR</text>
+    <text class="fc-tierlabel" x="1090" y="${498+5}">PLATFORM</text>`;
 
   const defs=`<defs>
     <marker id="fcArr" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#9AA8BC"/></marker>
