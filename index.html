@@ -212,7 +212,7 @@
       </div>
 
       <div class="fc-stage">
-        <svg class="fc-svg" id="fcSvg" viewBox="0 0 1300 880" role="img" aria-label="Brisa uctan uca akis diyagrami"></svg>
+        <svg class="fc-svg" id="fcSvg" viewBox="0 0 1300 1010" role="img" aria-label="Brisa uctan uca akis diyagrami"></svg>
       </div>
     </section>
 
@@ -494,7 +494,7 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
     // Birleşme düğümü
     {id:'merge', x:560, y:404, w:230, t:'Bayi',             s:'birleşik satış kanalı', icon:'store', c:'#1E84FF'},
     // Çekirdek + Lastik
-    {id:'brisa', x:560, y:560, w:300, core:true, t:'Brisa', s:'multivendor · OMS · stok havuzu'},
+    {id:'brisa', x:560, y:560, w:300, core:true, t:'Brisa', s:'B2B & Multi Vendor Platform'},
     {id:'last',  x:965, y:560, w:210, t:'Lastik.com.tr', s:'e-ticaret kanalı', icon:'globe', c:'#E8820E'},
     // Stok fulfilment (Brisa depoları)
     {id:'wh1',   x:300, y:828, w:165, t:'WH 1', s:'merkez depo', icon:'warehouse', c:'#0E9F8E'},
@@ -504,6 +504,10 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
     {id:'wa1',   x:820, y:828, w:165, t:'WHA · Bayi 1', s:'bayi deposu', icon:'store', c:'#6C4BD8'},
     {id:'wad',   x:952, y:828, dots:true},
     {id:'wan',   x:1062,y:828, w:165, t:'WHA · Bayi n', s:'bayi deposu', icon:'store', c:'#6C4BD8'},
+    // WHA · Bayi 1 alt depoları
+    {id:'bw1',   x:735, y:962, w:160, t:'Bayi1 WH 1', s:'bayi alt deposu', icon:'warehouse', c:'#6C4BD8'},
+    {id:'bwd',   x:858, y:962, dots:true},
+    {id:'bwn',   x:945, y:962, w:160, t:'Bayi1 WH n', s:'bayi alt deposu', icon:'warehouse', c:'#6C4BD8'},
   ];
   const M=Object.fromEntries(FN.map(n=>[n.id,n]));
   const H=n=>n.core?80:62;                    // node height
@@ -543,6 +547,14 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
   const wxs=whs.map(id=>M[id].x);
   plain(`M ${Math.min(...wxs)} ${BUS2} H ${Math.max(...wxs)}`,'bus');
   whs.forEach(id=>line(`M ${M[id].x} ${BUS2} V ${top(M[id])}`));
+
+  // 5) WHA · Bayi 1 -> alt depolar (Bayi1 WH 1 … Bayi1 WH n)
+  const SUB=905;
+  const subs=['bw1','bwn'];
+  plain(`M ${M.wa1.x} ${bot(M.wa1)} V ${SUB}`);
+  const sxs=subs.map(id=>M[id].x);
+  plain(`M ${Math.min(...sxs)} ${SUB} H ${Math.max(...sxs)}`,'bus');
+  subs.forEach(id=>line(`M ${M[id].x} ${SUB} V ${top(M[id])}`));
 
   // node renderer
   function nodeSVG(n){
