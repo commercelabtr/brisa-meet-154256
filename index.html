@@ -167,6 +167,30 @@
   @media (max-width:1040px){.scn{grid-template-columns:1fr;gap:14px;}}
   @media (max-width:860px){.fnd-mods{grid-template-columns:repeat(2,1fr);}.dual{grid-template-columns:1fr;}.dual-link{flex-direction:row;}}
   @media (max-width:760px){ h1{font-size:25px;} }
+
+  /* ---------- 00 · Uçtan uca akış (katmanlı) ---------- */
+  .flowmap{padding:30px 0 4px;}
+  .fm-tiers{display:flex;flex-direction:column;gap:0;margin:24px 0 8px;}
+  .fm-tier{display:grid;grid-template-columns:184px 1fr;gap:18px;align-items:center;}
+  .fm-tlabel{display:flex;flex-direction:column;gap:3px;padding:14px 16px;border-radius:13px;background:var(--card);border:1px solid var(--line);border-left:5px solid var(--tc);box-shadow:var(--shadow-sm);}
+  .fm-tlabel b{font-size:14px;font-weight:800;letter-spacing:-.01em;color:var(--ink);}
+  .fm-tlabel span{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);}
+  .fm-row{display:flex;flex-wrap:wrap;gap:10px;align-items:stretch;}
+  .fm-node{display:flex;align-items:center;gap:11px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 15px;box-shadow:var(--shadow-sm);min-width:154px;transition:transform .16s,box-shadow .16s,border-color .16s;}
+  .fm-node:hover{transform:translateY(-2px);border-color:#CBD5E1;box-shadow:var(--shadow);}
+  .fm-ico{width:36px;height:36px;border-radius:9px;flex:none;display:grid;place-items:center;color:#fff;background:var(--tc);}
+  .fm-ico svg{width:20px;height:20px;}
+  .fm-node b{display:block;font-size:13px;font-weight:700;line-height:1.15;letter-spacing:-.01em;}
+  .fm-node em{display:block;font-style:normal;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.03em;margin-top:2px;}
+  .fm-dots{display:flex;align-items:center;color:var(--muted);font-weight:800;font-size:18px;letter-spacing:2px;padding:0 4px;}
+  .fm-core{background:linear-gradient(160deg,#0E4DA4,#0A3B80);border:none;}
+  .fm-core b{color:#fff;}
+  .fm-core em{color:#BBD4F5;}
+  .fm-core .fm-ico{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);font-weight:800;font-size:18px;}
+  .fm-conn{display:flex;align-items:center;justify-content:flex-start;gap:10px;padding:10px 0 10px 80px;color:var(--muted);}
+  .fm-conn span{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--brisa);background:#EAF1FB;border:1px solid #D5E3F8;padding:4px 11px;border-radius:999px;}
+  .fm-conn svg{width:18px;height:18px;color:var(--brisa);}
+  @media (max-width:860px){.fm-tier{grid-template-columns:1fr;gap:10px;}.fm-conn{padding-left:10px;}}
 </style>
 </head>
 <body>
@@ -187,6 +211,71 @@
 
 <main>
   <div class="wrap">
+
+    <!-- 00 · Uçtan uca akış (katmanlı) -->
+    <section class="flowmap" id="akis">
+      <div class="head" style="padding-bottom:0">
+        <div class="eyebrow">00 · Uçtan Uca Akış</div>
+        <h1 style="max-width:30ch">Satış kanallarından bayilere, Brisa çekirdeğinden depolara</h1>
+        <p class="lead">Sipariş kanalları (owndigital, pazaryerleri/MP, online ve alt bayiler) bayiler üzerinden satışa dönüşür; tüm bayiler Brisa çekirdeği ve Lastik.com.tr ile buluşur; stok ve fulfillment Brisa depoları ile bayi depolarından karşılanır.</p>
+      </div>
+
+      <div class="fm-tiers">
+
+        <!-- Tier 1: Satış / sipariş kaynakları -->
+        <div class="fm-tier" style="--tc:#E8820E">
+          <div class="fm-tlabel"><b>Satış Kaynakları</b><span>kanal · talep</span></div>
+          <div class="fm-row">
+            <div class="fm-node"><div class="fm-ico">{{IC:globe}}</div><div><b>owndigital</b><em>kendi dijital kanal</em></div></div>
+            <div class="fm-node"><div class="fm-ico">{{IC:market}}</div><div><b>MP / MPS</b><em>pazaryerleri</em></div></div>
+            <div class="fm-node"><div class="fm-ico">{{IC:globe}}</div><div><b>Online</b><em>e-ticaret</em></div></div>
+            <div class="fm-node"><div class="fm-ico">{{IC:network}}</div><div><b>Alt Bayiler</b><em>bayi ağı</em></div></div>
+          </div>
+        </div>
+
+        <div class="fm-conn">{{IC:arrowdown}}<span>satış</span></div>
+
+        <!-- Tier 2: Bayiler -->
+        <div class="fm-tier" style="--tc:#1E84FF">
+          <div class="fm-tlabel"><b>Bayiler</b><span>satıcı · vendor</span></div>
+          <div class="fm-row">
+            <div class="fm-node"><div class="fm-ico">{{IC:store}}</div><div><b>Bayi 1</b><em>satıcı</em></div></div>
+            <div class="fm-node"><div class="fm-ico">{{IC:store}}</div><div><b>Bayi 2</b><em>satıcı</em></div></div>
+            <div class="fm-dots">···</div>
+            <div class="fm-node"><div class="fm-ico">{{IC:store}}</div><div><b>Bayi n</b><em>satıcı</em></div></div>
+          </div>
+        </div>
+
+        <div class="fm-conn">{{IC:arrowdown}}<span>Brisa çekirdeği</span></div>
+
+        <!-- Tier 3: Çekirdek + Lastik.com -->
+        <div class="fm-tier" style="--tc:#0E4DA4">
+          <div class="fm-tlabel"><b>Platform Çekirdeği</b><span>orkestrasyon</span></div>
+          <div class="fm-row">
+            <div class="fm-node fm-core"><div class="fm-ico">b</div><div><b>Brisa</b><em>multivendor · OMS · stok havuzu</em></div></div>
+            <div class="fm-dots">⇄</div>
+            <div class="fm-node" style="--tc:#E8820E"><div class="fm-ico">{{IC:globe}}</div><div><b>Lastik.com.tr</b><em>e-ticaret kanalı</em></div></div>
+          </div>
+        </div>
+
+        <div class="fm-conn">{{IC:arrowdown}}<span>stok &amp; fulfillment</span></div>
+
+        <!-- Tier 4: Depolar -->
+        <div class="fm-tier" style="--tc:#0E9F8E">
+          <div class="fm-tlabel"><b>Stok &amp; Fulfillment</b><span>depolar</span></div>
+          <div class="fm-row">
+            <div class="fm-node"><div class="fm-ico">{{IC:warehouse}}</div><div><b>Brisa WH 1</b><em>merkez depo</em></div></div>
+            <div class="fm-dots">···</div>
+            <div class="fm-node"><div class="fm-ico">{{IC:warehouse}}</div><div><b>Brisa WH n</b><em>merkez depo</em></div></div>
+            <div class="fm-node" style="--tc:#6C4BD8"><div class="fm-ico">{{IC:box}}</div><div><b>Bayi Depo 1</b><em>bayi stoku</em></div></div>
+            <div class="fm-dots">···</div>
+            <div class="fm-node" style="--tc:#6C4BD8"><div class="fm-ico">{{IC:box}}</div><div><b>Bayi Depo n</b><em>bayi stoku</em></div></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
     <div class="head">
       <div class="eyebrow">01 · Ekosistem Haritası</div>
       <h1>Brisa merkezde; bayiler, satış kanalları ve müşteriler tek platformda</h1>
@@ -311,6 +400,7 @@ const I = {
   route:'<circle cx="6" cy="6" r="2.2" fill="none" stroke="currentColor" stroke-width="1.7"/><circle cx="18" cy="18" r="2.2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M6 8.2v3.8a4 4 0 004 4h5.8" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
   network:'<circle cx="12" cy="5.5" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="5.5" cy="17" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="18.5" cy="17" r="2.2" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10.6 7.2L6.9 15M13.4 7.2L17.1 15M7.7 17h8.6" fill="none" stroke="currentColor" stroke-width="1.5"/>',
   arrow:'<path d="M4 12h13M12 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>',
+  arrowdown:'<path d="M12 4v13M6 11l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>',
   up:'<path d="M12 19V6M6 12l6-6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
 };
 
@@ -399,7 +489,7 @@ NODES.forEach(n=>{
       <div class="ch"><div class="clogo">b</div><div class="ct"><b>Brisa</b><span>MULTIVENDOR B2B PLATFORMU</span></div></div>
       <div class="chips">
         <span class="chip">Marketplace</span><span class="chip">Sipariş Orkestrasyonu</span>
-        <span class="chip">Stok Havuzu</span><span class="chip">WMS</span><span class="chip">Bayi Yönetimi</span>
+        <span class="chip">Stok Havuzu</span><span class="chip">OMS</span><span class="chip">TMS</span><span class="chip">WMS</span><span class="chip">Bayi Yönetimi</span>
       </div></div>`;
   } else {
     el.innerHTML=`<div class="ncard">
@@ -445,6 +535,10 @@ nodesEl.querySelectorAll('.node').forEach(node=>{
 /* ---------- Section 2 icons ---------- */
 const sec2=document.getElementById('iliski');
 if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg viewBox="0 0 24 24">${I[k]||''}</svg>`); }
+
+/* ---------- Section 00 (flow map) icons ---------- */
+const akis=document.getElementById('akis');
+if(akis){ akis.innerHTML=akis.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg viewBox="0 0 24 24">${I[k]||''}</svg>`); }
 
 /* ---------- Logos: wordmark default, upgrade to real logo if it loads ---------- */
 document.querySelectorAll('.logoslot').forEach(slot=>{
