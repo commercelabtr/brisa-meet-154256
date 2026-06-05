@@ -491,17 +491,19 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
     {id:'mag',   x:620, y:256, w:230, t:'Mağaza / Instore',s:'POS · mağaza',  icon:'store',   c:'#E8820E'},
     {id:'bayi',  x:980, y:256, w:230, t:'Bayiler',         s:'Bayi 1 … Bayi n',icon:'network',c:'#1E84FF'},
     {id:'altb',  x:980, y:62,  w:230, t:'Alt Bayiler',     s:'bayi ağı',       icon:'network',c:'#1E84FF'},
+    // Birleşme düğümü
+    {id:'merge', x:560, y:404, w:230, t:'Bayi',             s:'birleşik satış kanalı', icon:'store', c:'#1E84FF'},
     // Çekirdek + Lastik
-    {id:'brisa', x:560, y:498, w:300, core:true, t:'Brisa', s:'multivendor · OMS · stok havuzu'},
-    {id:'last',  x:965, y:498, w:210, t:'Lastik.com.tr', s:'e-ticaret kanalı', icon:'globe', c:'#E8820E'},
+    {id:'brisa', x:560, y:560, w:300, core:true, t:'Brisa', s:'multivendor · OMS · stok havuzu'},
+    {id:'last',  x:965, y:560, w:210, t:'Lastik.com.tr', s:'e-ticaret kanalı', icon:'globe', c:'#E8820E'},
     // Stok fulfilment (Brisa depoları)
-    {id:'wh1',   x:300, y:792, w:165, t:'WH 1', s:'merkez depo', icon:'warehouse', c:'#0E9F8E'},
-    {id:'whd',   x:432, y:792, dots:true},
-    {id:'whn',   x:540, y:792, w:165, t:'WH n', s:'merkez depo', icon:'warehouse', c:'#0E9F8E'},
+    {id:'wh1',   x:300, y:828, w:165, t:'WH 1', s:'merkez depo', icon:'warehouse', c:'#0E9F8E'},
+    {id:'whd',   x:432, y:828, dots:true},
+    {id:'whn',   x:540, y:828, w:165, t:'WH n', s:'merkez depo', icon:'warehouse', c:'#0E9F8E'},
     // Stok fulfilment (bayi depoları · WHA)
-    {id:'wa1',   x:820, y:792, w:165, t:'WHA · Bayi 1', s:'bayi deposu', icon:'store', c:'#6C4BD8'},
-    {id:'wad',   x:952, y:792, dots:true},
-    {id:'wan',   x:1062,y:792, w:165, t:'WHA · Bayi n', s:'bayi deposu', icon:'store', c:'#6C4BD8'},
+    {id:'wa1',   x:820, y:828, w:165, t:'WHA · Bayi 1', s:'bayi deposu', icon:'store', c:'#6C4BD8'},
+    {id:'wad',   x:952, y:828, dots:true},
+    {id:'wan',   x:1062,y:828, w:165, t:'WHA · Bayi n', s:'bayi deposu', icon:'store', c:'#6C4BD8'},
   ];
   const M=Object.fromEntries(FN.map(n=>[n.id,n]));
   const H=n=>n.core?80:62;                    // node height
@@ -509,7 +511,7 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
   const L=n=>n.x-n.w/2, R=n=>n.x+n.w/2;
 
   // bus y-levels
-  const EXT=158, COL=388, BUS2=648;
+  const EXT=158, COL=345, BUS2=708;
   const channels=['onl','mag','bayi'];
   const whs=['wh1','whn','wa1','wan'];
 
@@ -526,11 +528,12 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
   // 1b) Bayiler -> Alt Bayiler (yukarı ok)
   line(`M ${M.bayi.x} ${top(M.bayi)} V ${bot(M.altb)}`);
 
-  // 2) kanallar (Online, Mağaza, Bayiler) -> Satış bus -> Brisa
+  // 2) kanallar (Online, Mağaza, Bayiler) -> Satış bus -> Bayi (birleşme) -> Brisa
   channels.forEach(id=>plain(`M ${M[id].x} ${bot(M[id])} V ${COL}`));
   const cxs=channels.map(id=>M[id].x);
-  plain(`M ${Math.min(...cxs,M.brisa.x)} ${COL} H ${Math.max(...cxs,M.brisa.x)}`,'bus');
-  line(`M ${M.brisa.x} ${COL} V ${top(M.brisa)}`);
+  plain(`M ${Math.min(...cxs,M.merge.x)} ${COL} H ${Math.max(...cxs,M.merge.x)}`,'bus');
+  line(`M ${M.merge.x} ${COL} V ${top(M.merge)}`);
+  line(`M ${M.merge.x} ${bot(M.merge)} V ${top(M.brisa)}`);
 
   // 3) Brisa <-> Lastik (yatay çift yön)
   edges+=`<path class="fc-edge" d="M ${R(M.brisa)} ${M.brisa.y} H ${L(M.last)}" marker-end="url(#fcArr)" marker-start="url(#fcArr)"/>`;
@@ -570,7 +573,7 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
     <text class="fc-band" x="40" y="${BUS2+5}">STOK <tspan fill="#94A3B8" font-weight="700">· FULFILMENT</tspan></text>
     <text class="fc-tierlabel" x="40" y="${66}">ONLINE</text>
     <text class="fc-tierlabel" x="40" y="${260}">KANALLAR</text>
-    <text class="fc-tierlabel" x="1090" y="${498+5}">PLATFORM</text>`;
+    <text class="fc-tierlabel" x="1090" y="${M.brisa.y+5}">PLATFORM</text>`;
 
   const defs=`<defs>
     <marker id="fcArr" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#9AA8BC"/></marker>
