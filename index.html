@@ -212,7 +212,7 @@
       </div>
 
       <div class="fc-stage">
-        <svg class="fc-svg" id="fcSvg" viewBox="0 0 1300 1010" role="img" aria-label="Brisa uctan uca akis diyagrami"></svg>
+        <svg class="fc-svg" id="fcSvg" viewBox="0 0 1380 1010" role="img" aria-label="Brisa uctan uca akis diyagrami"></svg>
       </div>
     </section>
 
@@ -502,9 +502,11 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
     {id:'whd',   x:432, y:828, dots:true},
     {id:'whn',   x:540, y:828, w:165, t:'WH n', s:'merkez depo', icon:'warehouse', c:'#0E9F8E'},
     // Stok fulfilment (bayi depoları · WHA)
-    {id:'wa1',   x:820, y:828, w:165, t:'WHA · Bayi 1', s:'bayi deposu', icon:'store', c:'#6C4BD8'},
+    {id:'wa1',   x:820, y:828, w:165, t:'Bayi 1', s:'bayi deposu', icon:'store', c:'#6C4BD8'},
     {id:'wad',   x:952, y:828, dots:true},
-    {id:'wan',   x:1062,y:828, w:165, t:'WHA · Bayi n', s:'bayi deposu', icon:'store', c:'#6C4BD8'},
+    {id:'wan',   x:1062,y:828, w:165, t:'Bayi n', s:'bayi deposu', icon:'store', c:'#6C4BD8'},
+    {id:'vdd',   x:1175,y:828, dots:true},
+    {id:'ven',   x:1268,y:828, w:165, t:'Vendor WH n', s:'vendor deposu', icon:'store', c:'#6C4BD8'},
     // WHA · Bayi 1 alt depoları
     {id:'bw1',   x:735, y:962, w:160, t:'Bayi1 WH 1', s:'bayi alt deposu', icon:'warehouse', c:'#6C4BD8'},
     {id:'bwd',   x:858, y:962, dots:true},
@@ -518,7 +520,7 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
   // bus y-levels
   const EXT=158, COL=345, BUS2=708;
   const channels=['onl','mag','altb'];
-  const whs=['wh1','whn','wa1','wan'];
+  const whs=['wh1','whn','wa1','wan','ven'];
 
   let edges='';   // path d strings (with class)
   const line=(d,cls)=>{ edges+=`<path class="fc-edge ${cls||''}" d="${d}" marker-end="url(#fcArr)"/>`; };
