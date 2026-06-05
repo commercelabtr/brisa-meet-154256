@@ -516,7 +516,7 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
 
   // bus y-levels
   const EXT=158, COL=345, BUS2=708;
-  const channels=['onl','mag','bayi'];
+  const channels=['onl','mag'];
   const whs=['wh1','whn','wa1','wan'];
 
   let edges='';   // path d strings (with class)
@@ -532,12 +532,18 @@ if(sec2){ sec2.innerHTML=sec2.innerHTML.replace(/\{\{IC:(\w+)\}\}/g,(m,k)=>`<svg
   // 1b) Bayiler -> Alt Bayiler (yukarı ok)
   line(`M ${M.bayi.x} ${top(M.bayi)} V ${bot(M.altb)}`);
 
-  // 2) kanallar (Online, Mağaza, Bayiler) -> Satış bus -> Bayi (birleşme) -> Brisa
+  // 2) Online, Mağaza -> Satış bus -> Bayi (birleşme)
   channels.forEach(id=>plain(`M ${M[id].x} ${bot(M[id])} V ${COL}`));
   const cxs=channels.map(id=>M[id].x);
   plain(`M ${Math.min(...cxs,M.merge.x)} ${COL} H ${Math.max(...cxs,M.merge.x)}`,'bus');
   line(`M ${M.merge.x} ${COL} V ${top(M.merge)}`);
-  line(`M ${M.merge.x} ${bot(M.merge)} V ${top(M.brisa)}`);
+
+  // 2b) Bayi + Bayiler alttan birleşip -> Brisa
+  const MB=480;
+  plain(`M ${M.merge.x} ${bot(M.merge)} V ${MB}`);
+  plain(`M ${M.bayi.x} ${bot(M.bayi)} V ${MB}`);
+  plain(`M ${M.merge.x} ${MB} H ${M.bayi.x}`,'bus');
+  line(`M ${M.merge.x} ${MB} V ${top(M.brisa)}`);
 
   // 3) Brisa <-> Lastik (yatay çift yön)
   edges+=`<path class="fc-edge" d="M ${R(M.brisa)} ${M.brisa.y} H ${L(M.last)}" marker-end="url(#fcArr)" marker-start="url(#fcArr)"/>`;
